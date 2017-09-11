@@ -71,6 +71,13 @@ function readyNow(){
 
 function showPerson( peopleArray ){
     console.log( 'in showPerson' );
+    // wrap index if too high or too low
+    if( index < 0 ){
+        index = peopleArray.length-1;
+    } // end wrap too high
+    else if( index >= peopleArray.length ){
+        index = 0;
+    } // end wrap too low 
     // display the data on DOM
     var $el = $( '#output' );
     // empty the output element
