@@ -30,6 +30,15 @@ function getPeople(){
         success: function( response ){
             console.log( 'back from GET with:', response );
             // display the data on DOM
+            var $el = $( '#output' );
+            // empty the output element
+            $el.empty();
+            // loop through all people
+            for( var i=0; i < response.people.length; i ++ ){
+                // for each person, append a p tag to the output element
+                var $p = $( '<p>', { 'text': response.people[i].name + ': ' + response.people[i].fact } );
+                $el.append( $p );
+            } // end for
         } // end success
     }); //end ajax
 } // end getPeople
