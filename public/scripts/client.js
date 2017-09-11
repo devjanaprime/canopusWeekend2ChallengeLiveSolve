@@ -1,3 +1,5 @@
+var index = 0;
+
 function addPerson(){
     console.log( 'in addPerson' );
     // get user input & place in an object
@@ -29,25 +31,55 @@ function getPeople(){
         url: '/person',
         success: function( response ){
             console.log( 'back from GET with:', response );
-            // display the data on DOM
-            var $el = $( '#output' );
-            // empty the output element
-            $el.empty();
-            // loop through all people
-            for( var i=0; i < response.people.length; i ++ ){
-                // for each person, append a p tag to the output element
-                var $p = $( '<p>', { 'text': response.people[i].name + ': ' + response.people[i].fact } );
-                $el.append( $p );
-            } // end for
+            showPerson( response.people );
         } // end success
     }); //end ajax
 } // end getPeople
+
+function nextPerson(){
+    console.log( 'in nextPerson' );
+    // increment index
+    index++;
+    // wrap if needed
+    // show next person
+    getPeople();
+} // end 
+
+function prevPerson(){
+    console.log( 'in prevPerson' );
+    // decrement index
+    index--;
+    // wrap if needed
+    // show next person
+    getPeople();
+} // end 
 
 function readyNow(){
     // get people already on server
     getPeople();
     // event listener for the add person button
     $( '#addPersonButton' ).on( 'click', addPerson );
+    $( '#output' ).on( 'click', '#prevButton', prevPerson );
+    $( '#output' ).on( 'click', '#nextButton', nextPerson );
 } // end ready funk
+
+function showPerson( peopleArray ){
+    console.log( 'in showPerson' );
+    // display the data on DOM
+    var $el = $( '#output' );
+    // empty the output element
+    $el.empty();
+    // display just one person
+    var $personP = $( '<p>', { text: peopleArray[index].name + ': ' + peopleArray[index].fact } );
+    var $countP = $( '<p>', { text: (index + 1) + '/' + peopleArray.length } );
+    var $prevButton = $( '<button>', { text: '<-', id: 'prevButton' } );
+    var $nextButton = $( '<button>', { text: '->', id: 'nextButton' } );
+    var $controlsP = $( '<p>', { text: 'controls: ' } );
+    $controlsP.append( $prevButton );
+    $controlsP.append( $nextButton );
+    $el.append( $personP );
+    $el.append( $countP );
+    $el.append( $controlsP );
+} // end showPerson
 
 $( document ).ready( readyNow );
