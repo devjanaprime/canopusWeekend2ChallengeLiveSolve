@@ -5,6 +5,15 @@ router.use( bodyParser.urlencoded( { extended: true } ) );
 // our peeps
 var people =[];
 
+router.delete( '/', function( req, res ){
+    console.log( 'in /person DELETE:', req.body );
+    // remove one person from the array at req.body.index
+    people.splice( req.body.index, 1 );
+    // log out people
+    console.log( 'people:', people );
+    res.send( 200 );
+}); // end /person DELETE
+
 router.get( '/', function( req, res ){
     console.log( 'in /person GET' );
     // place people array in side an object
